@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		281BF0C420F283920053747D /* BasicScene.scn in Resources */ = {isa = PBXBuildFile; fileRef = 281BF0C320F283920053747D /* BasicScene.scn */; };
 		28F57F1620ED9AE0002B230D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F57F1520ED9AE0002B230D /* AppDelegate.swift */; };
 		28F57F1820ED9AE0002B230D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F57F1720ED9AE0002B230D /* ViewController.swift */; };
 		28F57F1B20ED9AE0002B230D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28F57F1920ED9AE0002B230D /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		281BF0C320F283920053747D /* BasicScene.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BasicScene.scn; sourceTree = "<group>"; };
 		28F57F1220ED9AE0002B230D /* PreTDCAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreTDCAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28F57F1520ED9AE0002B230D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28F57F1720ED9AE0002B230D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				28F57F1C20ED9AE1002B230D /* Assets.xcassets */,
 				28F57F1E20ED9AE1002B230D /* LaunchScreen.storyboard */,
 				28F57F2120ED9AE1002B230D /* Info.plist */,
+				281BF0C320F283920053747D /* BasicScene.scn */,
 			);
 			path = PreTDCAR;
 			sourceTree = "<group>";
@@ -138,6 +141,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				281BF0C420F283920053747D /* BasicScene.scn in Resources */,
 				28F57F2020ED9AE1002B230D /* LaunchScreen.storyboard in Resources */,
 				28F57F1D20ED9AE1002B230D /* Assets.xcassets in Resources */,
 				28F57F1B20ED9AE0002B230D /* Main.storyboard in Resources */,

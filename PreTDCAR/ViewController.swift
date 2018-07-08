@@ -15,6 +15,10 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let scene = loadScene(name: "BasicScene.scn") {
+            arSceneView.scene = scene
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,9 +53,25 @@ class ViewController: UIViewController {
         parent.addChildNode(cubeNode)
     }
     
+    func loadScene(name: String) -> SCNScene? {
+        if let scene = SCNScene(named: name) {
+            scene.rootNode.eulerAngles.x = -.pi / 2
+            return scene
+        }
+        return nil
+    }
+    
+    func addScene(parent:SCNNode, name: String) {
+        if let scene = SCNScene(named: name) {
+            parent.addChildNode(scene.rootNode)
+        }
+    }
+    
     @IBAction func onAddObjectTouched() {
         //Adicionamos o cubo ao centro do parent
-        addCube(parent: arSceneView.scene.rootNode)
+//        addCube(parent: arSceneView.scene.rootNode)
+        //Adicionamos a scene ao nosso root
+        addScene(parent: arSceneView.scene.rootNode, name: "BasicScene.scn")
     }
     
 }
