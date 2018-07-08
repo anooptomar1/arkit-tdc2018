@@ -12,6 +12,8 @@
 		28F57F1B20ED9AE0002B230D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28F57F1920ED9AE0002B230D /* Main.storyboard */; };
 		28F57F1D20ED9AE1002B230D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28F57F1C20ED9AE1002B230D /* Assets.xcassets */; };
 		28F57F2020ED9AE1002B230D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28F57F1E20ED9AE1002B230D /* LaunchScreen.storyboard */; };
+		28F57F2920ED9B8D002B230D /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28F57F2820ED9B8D002B230D /* SceneKit.framework */; };
+		28F57F2B20ED9B91002B230D /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28F57F2A20ED9B91002B230D /* ARKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		28F57F1C20ED9AE1002B230D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		28F57F1F20ED9AE1002B230D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		28F57F2120ED9AE1002B230D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28F57F2820ED9B8D002B230D /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
+		28F57F2A20ED9B91002B230D /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +33,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28F57F2B20ED9B91002B230D /* ARKit.framework in Frameworks */,
+				28F57F2920ED9B8D002B230D /* SceneKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +46,7 @@
 			children = (
 				28F57F1420ED9AE0002B230D /* PreTDCAR */,
 				28F57F1320ED9AE0002B230D /* Products */,
+				28F57F2720ED9B8D002B230D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +69,15 @@
 				28F57F2120ED9AE1002B230D /* Info.plist */,
 			);
 			path = PreTDCAR;
+			sourceTree = "<group>";
+		};
+		28F57F2720ED9B8D002B230D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28F57F2A20ED9B91002B230D /* ARKit.framework */,
+				28F57F2820ED9B8D002B230D /* SceneKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -213,7 +229,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -267,7 +283,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
