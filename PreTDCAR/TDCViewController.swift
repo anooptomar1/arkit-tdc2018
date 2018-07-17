@@ -21,15 +21,17 @@ class TDCViewController: UIViewController {
     var mainLight: SCNLight?
     var enableMainLight = true
     var autoenablesDefaultLighting = false
-    var isLightEstimationEnabled = false
-    var updateEnvironmentalLight = false
+    var isLightEstimationEnabled = true
+    var lightNodes: [SCNNode] = []
     
     //MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
        
         if (enableMainLight) {
-            mainLight = addLight(type: .omni, at: nil, parent: nil).light
+            let mainLightNode = addLight(type: .omni, at: nil, parent: nil)
+            lightNodes.append(mainLightNode)
+            mainLight = mainLightNode.light
         }
         
     }
@@ -165,6 +167,21 @@ class TDCViewController: UIViewController {
         }
     }
     
+    //MARK: Light Estimation
+    func updateLightNodesLightEstimation() {
+        guard let lightEstimate = self.arSceneView.session.currentFrame?.lightEstimate, isLightEstimationEnabled
+            else { return }
+        
+        let ambientIntensity = lightEstimate.ambientIntensity
+        let ambientColorTemperature = lightEstimate.ambientColorTemperature
+        
+        for lightNode in self.lightNodes {
+            guard let light = lightNode.light else { continue }
+            light.intensity = ambientIntensity
+            light.temperature = ambientColorTemperature
+        }
+    }
+    
 }
 
 extension TDCViewController: ARSCNViewDelegate {
@@ -183,7 +200,11 @@ extension TDCViewController: ARSCNViewDelegate {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        if(!isLightEstimationEnabled) {
+            return
+        }
         
+        updateLightNodesLightEstimation()
     }
     
 }
