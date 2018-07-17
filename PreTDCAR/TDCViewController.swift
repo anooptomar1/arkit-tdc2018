@@ -14,7 +14,7 @@ class TDCViewController: UIViewController {
     
     @IBOutlet weak var arSceneView: ARSCNView!
     
-   
+   var planeDetection = true
     
     //MARK: -
     override func viewDidLoad() {
@@ -51,9 +51,7 @@ class TDCViewController: UIViewController {
     //MARK: Objects
     
     func addCube(parent: SCNNode) -> SCNNode{
-        // As medidas são em metros, então construímos um cubo de 0.2m == 20cm
         let cubeGeometry: SCNBox = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0.0)
-        // Aplicamos uma cor ao material difuso padrão
         cubeGeometry.firstMaterial?.diffuse.contents = UIColor.orange
         let cubeNode = SCNNode(geometry: cubeGeometry)
         cubeNode.position = SCNVector3(x: 0.0, y: 0.0, z: -0.6)
@@ -68,13 +66,36 @@ class TDCViewController: UIViewController {
     //MARK: Interface
     
     @IBAction func onAddObjectTouched() {
-        //Adicionamos o cubo ao centro do parent
         let cube = addCube(parent: arSceneView.scene.rootNode)
-        //Adicionamos a scene ao nosso root
-        //        addScene(parent: arSceneView.scene.rootNode, name: "BasicScene.scn")
-        //Adicionamos a tree ao nosso root quatro metros atrás do cubo
         addTree(parent: arSceneView.scene.rootNode, position: SCNVector3(x: 0, y: 0 , z: -4))
     }
+    
+    
+    //MARK: Plane Detection
+    func addDetectedPlane(to node: SCNNode, from anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+        
+        let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
+        let planeNode = SCNNode(geometry: plane)
+        planeNode.simdPosition = float3(planeAnchor.center.x, 0, planeAnchor.center.z)
+        
+        planeNode.eulerAngles.x = -.pi / 2
+        
+        node.addChildNode(planeNode)
+    }
+    
+    func updateDetectedPlanes(in node: SCNNode, _ anchor: ARAnchor) {
+        guard let planeAnchor = anchor as?  ARPlaneAnchor,
+            let planeNode = node.childNodes.first,
+            let plane = planeNode.geometry as? SCNPlane
+            else { return }
+        
+        planeNode.simdPosition = float3(planeAnchor.center.x, 0, planeAnchor.center.z)
+        
+        plane.width = CGFloat(planeAnchor.extent.x)
+        plane.height = CGFloat(planeAnchor.extent.z)
+    }
+    
     
 }
 
@@ -82,11 +103,15 @@ extension TDCViewController: ARSCNViewDelegate {
    
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        
+        if (planeDetection) {
+            addDetectedPlane(to: node, from: anchor)
+        }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        
+        if (planeDetection) {
+            updateDetectedPlanes(in: node, anchor)
+        }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {

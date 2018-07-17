@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var arSceneView: ARSCNView!
     
-    var planeDetection = false
+    var planeDetection = true
     var enableNodeTouch = true
     
     //MARK: Light Properties
@@ -21,12 +21,12 @@ class ViewController: UIViewController {
     var mainLight: SCNLight?
     var enableMainLight = false
     var autoenablesDefaultLighting = false
-    var isLightEstimationEnabled = true
+    var isLightEstimationEnabled = false
     var updateEnvironmentalLight = false
     var lightNodes: [SCNNode] = []
     
     //MARK: Image Detection Properties
-    var imageDetection = true
+    var imageDetection = false
     @IBOutlet weak var label: UILabel!
     
     //MARK: -
@@ -67,8 +67,8 @@ class ViewController: UIViewController {
         } else {
             worldConfiguration.planeDetection = [.horizontal]
         }
-        if #available(iOS 11.3, *) {
-            guard imageDetection, let images = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
+        if #available(iOS 11.3, *), imageDetection {
+            guard let images = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
                 fatalError("Algo deu errado ao carregar do AR Resources")
             }
             worldConfiguration.detectionImages = images
