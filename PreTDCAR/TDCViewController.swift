@@ -1,20 +1,21 @@
 //
-//  ViewController.swift
+//  TDCViewController.swift
 //  PreTDCAR
 //
-//  Created by Vitor Navarro on 2018-07-04.
+//  Created by Vitor Navarro on 2018-07-14.
 //  Copyright © 2018 Wattion. All rights reserved.
 //
+
 
 import UIKit
 import ARKit
 
-class ViewController: UIViewController {
+class TDCViewController: UIViewController {
     
     @IBOutlet weak var arSceneView: ARSCNView!
     
     var planeDetection = false
-    var enableNodeTouch = true
+    var enableNodeTouch = false
     
     //MARK: Light Properties
     
@@ -22,20 +23,22 @@ class ViewController: UIViewController {
     var enableMainLight = false
     var autoenablesDefaultLighting = false
     var isLightEstimationEnabled = true
-    var updateEnvironmentalLight = false
+    var updateEnvironmentalLight = true
     var lightNodes: [SCNNode] = []
     
     //MARK: Image Detection Properties
     var imageDetection = true
     @IBOutlet weak var label: UILabel!
     
+    //MARK: Gesture properties
+    var tap: UITapGestureRecognizer!
+    
     //MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        if let scene = loadScene(name: "BasicScene.scn") {
-//            arSceneView.scene = scene
-//        }
+        //        if let scene = loadScene(name: "BasicScene.scn") {
+        //            arSceneView.scene = scene
+        //        }
         
         if (enableMainLight) {
             mainLight = insertLight(type: .omni, at: nil, parent: nil).light
@@ -59,36 +62,34 @@ class ViewController: UIViewController {
     }
     
     //MARK: Configuration
-
+    
     func configureARKit() {
-        let worldConfiguration = ARWorldTrackingConfiguration()
+        let configuration = ARWorldTrackingConfiguration()
         if #available(iOS 11.3, *) {
-            worldConfiguration.planeDetection = [.horizontal, .vertical]
+            configuration.planeDetection = [.horizontal, .vertical]
         } else {
-            worldConfiguration.planeDetection = [.horizontal]
+            configuration.planeDetection = [.horizontal]
         }
-        if #available(iOS 11.3, *) {
-            guard imageDetection, let images = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
+        if #available(iOS 11.3, *), imageDetection {
+            guard let images = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
                 fatalError("Algo deu errado ao carregar do AR Resources")
             }
-            worldConfiguration.detectionImages = images
+            configuration.detectionImages = images
         }
+        
         arSceneView.autoenablesDefaultLighting = autoenablesDefaultLighting //intensidade sempre em 1000, omni directional light é adicionada a cena, a luz smepre parece vir da sua direção
-        worldConfiguration.isLightEstimationEnabled = isLightEstimationEnabled // adiciona estimativa de luz para cada ARFrame, que pode ser usada para renderizar a cena, ainda assim é necessário iluminar a cena adequadamente
+        configuration.isLightEstimationEnabled = isLightEstimationEnabled // adiciona estimativa de luz para cada ARFrame, que pode ser usada para renderizar a cena, ainda assim é necessário iluminar a cena adequadamente
         
         arSceneView.delegate = self
-        arSceneView.session.run(worldConfiguration, options: [.resetTracking, .removeExistingAnchors])
+        arSceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
     
     //MARK: Objects
     
     func addCube(parent: SCNNode) -> SCNNode{
-        // As medidas são em metros, então construímos um cubo de 0.2m == 20cm
-        let cubeGeometry: SCNBox = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0.0)
-        // Aplicamos uma cor ao material difuso padrão
-        cubeGeometry.firstMaterial?.diffuse.contents = UIColor.orange
-        let cubeNode = SCNNode(geometry: cubeGeometry)
-        cubeNode.position = SCNVector3(x: 0.0, y: 0.0, z: -0.6)
+        let cube = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0.0)
+        let cubeNode = SCNNode(geometry: cube)
+        cubeNode.position = SCNVector3(x: 0, y: 0, z: -0.6)
         parent.addChildNode(cubeNode)
         return cubeNode
     }
@@ -99,12 +100,6 @@ class ViewController: UIViewController {
             return scene
         }
         return nil
-    }
-    
-    func addScene(parent:SCNNode, name: String) {
-        if let scene = SCNScene(named: name) {
-            parent.addChildNode(scene.rootNode)
-        }
     }
     
     func addTree(parent: SCNNode, position: SCNVector3) {
@@ -143,19 +138,17 @@ class ViewController: UIViewController {
     func updateEnvironmentalLightWithEstimation() {
         guard let lightEstimate = self.arSceneView.session.currentFrame?.lightEstimate, isLightEstimationEnabled
             else { return }
-        // Um valor de 1000 é considerado neutro. lighting environment intensity normaliza
-        // 1.0 para neutro então escalamos o valor para o dado correto
+
         let intensity = lightEstimate.ambientIntensity / 1000.0
         self.arSceneView.scene.lightingEnvironment.intensity = intensity
     }
     
     func updateLightNodesLightEstimation() {
-        //Cada frame tem uma estimativa de luz que podemos usar caso esteja sendo preenchido
         guard let lightEstimate = self.arSceneView.session.currentFrame?.lightEstimate, isLightEstimationEnabled
             else { return }
-            
-//        print("Estimativa da intensidade de luz: %f", lightEstimate.ambientIntensity)
-//        print("Estimativa da temperatura de cor: %f", lightEstimate.ambientColorTemperature)
+        
+        //        print("Estimativa da intensidade de luz: %f", lightEstimate.ambientIntensity)
+        //        print("Estimativa da temperatura de cor: %f", lightEstimate.ambientColorTemperature)
         
         let ambientIntensity = lightEstimate.ambientIntensity
         let ambientColorTemperature = lightEstimate.ambientColorTemperature
@@ -170,11 +163,7 @@ class ViewController: UIViewController {
     //MARK: Interface
     
     @IBAction func onAddObjectTouched() {
-        //Adicionamos o cubo ao centro do parent
         let cube = addCube(parent: arSceneView.scene.rootNode)
-        //Adicionamos a scene ao nosso root
-        //        addScene(parent: arSceneView.scene.rootNode, name: "BasicScene.scn")
-        //Adicionamos a tree ao nosso root quatro metros atrás do cubo
         addTree(parent: arSceneView.scene.rootNode, position: SCNVector3(x: 0, y: 0 , z: -4))
     }
     
@@ -207,8 +196,6 @@ class ViewController: UIViewController {
     }
     
     //MARK: Gesture
-    var tap: UITapGestureRecognizer!
-    
     func configureTouch() {
         tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
         arSceneView.addGestureRecognizer(tap)
@@ -216,12 +203,11 @@ class ViewController: UIViewController {
     
     @objc func handleTap(recognizer: UITapGestureRecognizer){
         
-        if recognizer.state == .ended { //QUando o tap acabou podemos verificar os hits
+        if recognizer.state == .ended {
             let location: CGPoint = recognizer.location(in: arSceneView)
             let hits = arSceneView.hitTest(location, options: nil)
-            if !hits.isEmpty{ //se tivemos um hit decidimos o que fazer, nesse caso pegamos só o primeiro nó atingido pra interagir (é o mais próximo da câmera
+            if !hits.isEmpty {
                 let tappedNode = hits.first?.node
-                // trocamos as cores desse objeto mudando seu material
                 let red = Double(arc4random_uniform(256))/255.0
                 let green = Double(arc4random_uniform(256))/255.0
                 let blue = Double(arc4random_uniform(256))/255.0
@@ -233,44 +219,34 @@ class ViewController: UIViewController {
     
 }
 
-extension ViewController: ARSCNViewDelegate {
+extension TDCViewController: ARSCNViewDelegate {
     
     func addDetectedPlane(to node: SCNNode, from anchor: ARAnchor) {
-        // Vamos usar apenas ancoras que sejam planos, outros tipos de ancoras podem ser usadas com outros propósitos.
-        // OUtras anchoras ARFaceAnchor / ARImageAnchor
         guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
         
-        // Vamos criar um objeto de plano no scene kit usando o tamanho estimado do ARPLaneAnchor via extent
         let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
         let planeNode = SCNNode(geometry: plane)
-        //Para posicionar o plano criado mudamos a posição dele usando o centro do plano
         planeNode.simdPosition = float3(planeAnchor.center.x, 0, planeAnchor.center.z)
         
-        // O ARPlaneAnchor é orientado horizontalmente enquanto o SCNPlane é orientado verticalmente
-        // para alinhar ambos corretamente é necessário rotacionar em x
         planeNode.eulerAngles.x = -.pi / 2
         
-        // A transparencia é só pra vermos através do plano
-//        planeNode.opacity = 0.25
+        planeNode.opacity = 0.25
         
+//        addCube(parent: planeNode)
         addWolf(parent: planeNode, position: SCNVector3(x: 0, y: 0 , z: 0))
-        lightNodes.append(insertLight(type: .omni, at: nil, parent: planeNode))
+//        lightNodes.append(insertLight(type: .omni, at: nil, parent: planeNode))
         
-        // Agora podemos adicionar o plano para que o tracking continue atualiznado-o
         node.addChildNode(planeNode)
     }
     
     func updateDetectedPlanes(in node: SCNNode, _ anchor: ARAnchor) {
-        // Vamos atualizar os planos que foram adicionados no renderer didAdd
         guard let planeAnchor = anchor as?  ARPlaneAnchor,
             let planeNode = node.childNodes.first,
             let plane = planeNode.geometry as? SCNPlane
             else { return }
         
-        // Atualizamos a posição do plano com o centro do plano ancora de acordo com seu transform
         planeNode.simdPosition = float3(planeAnchor.center.x, 0, planeAnchor.center.z)
         
-        // O ARKit pode acabar juntando planos ou aumentando-os, por isso atualizamos sua largura e altura de acordo com o x/z da ancora
         plane.width = CGFloat(planeAnchor.extent.x)
         plane.height = CGFloat(planeAnchor.extent.z)
     }
@@ -298,11 +274,11 @@ extension ViewController: ARSCNViewDelegate {
     func updateDetectedObjectViaImage(in node: SCNNode, anchor: ARAnchor) {
         if imageDetection, let imageAnchor = anchor as? ARImageAnchor {
             let referenceImage = imageAnchor.referenceImage
-            
+
             DispatchQueue.main.async {
                 self.label.text = referenceImage.name ?? "Not named"
             }
-            
+
             return
         }
     }
@@ -312,7 +288,9 @@ extension ViewController: ARSCNViewDelegate {
             addDetectedPlane(to: node, from: anchor)
         }
         if #available(iOS 11.3, *) {
-            addDetectedObjectViaImage(node: node, anchor: anchor)
+            if(imageDetection) {
+                addDetectedObjectViaImage(node: node, anchor: anchor)
+            }
         }
     }
     
@@ -321,14 +299,16 @@ extension ViewController: ARSCNViewDelegate {
             updateDetectedPlanes(in: node, anchor)
         }
         if #available(iOS 11.3, *) {
-            updateDetectedObjectViaImage(in: node, anchor: anchor)
+            if(imageDetection) {
+                updateDetectedObjectViaImage(in: node, anchor: anchor)
+            }
         }
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         if(!isLightEstimationEnabled) {
             return
-            
+
         }
         if(updateEnvironmentalLight) {
             updateEnvironmentalLightWithEstimation()
