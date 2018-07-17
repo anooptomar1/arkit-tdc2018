@@ -48,6 +48,34 @@ class TDCViewController: UIViewController {
         arSceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
     
+    //MARK: Objects
+    
+    func addCube(parent: SCNNode) -> SCNNode{
+        // As medidas são em metros, então construímos um cubo de 0.2m == 20cm
+        let cubeGeometry: SCNBox = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0.0)
+        // Aplicamos uma cor ao material difuso padrão
+        cubeGeometry.firstMaterial?.diffuse.contents = UIColor.orange
+        let cubeNode = SCNNode(geometry: cubeGeometry)
+        cubeNode.position = SCNVector3(x: 0.0, y: 0.0, z: -0.6)
+        parent.addChildNode(cubeNode)
+        return cubeNode
+    }
+    
+    func addTree(parent: SCNNode, position: SCNVector3) {
+        addObjectFrom(file: "lowpoly_tree_sample.dae", to: parent, at: position)
+    }
+    
+    //MARK: Interface
+    
+    @IBAction func onAddObjectTouched() {
+        //Adicionamos o cubo ao centro do parent
+        let cube = addCube(parent: arSceneView.scene.rootNode)
+        //Adicionamos a scene ao nosso root
+        //        addScene(parent: arSceneView.scene.rootNode, name: "BasicScene.scn")
+        //Adicionamos a tree ao nosso root quatro metros atrás do cubo
+        addTree(parent: arSceneView.scene.rootNode, position: SCNVector3(x: 0, y: 0 , z: -4))
+    }
+    
 }
 
 extension TDCViewController: ARSCNViewDelegate {

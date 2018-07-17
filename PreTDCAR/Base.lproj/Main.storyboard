@@ -206,6 +206,9 @@
                                 <state key="normal" title="Novo Obj.">
                                     <color key="titleColor" red="0.1450980392" green="0.1450980392" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="onAddObjectTouched" destination="SWz-J3-fLc" eventType="touchUpInside" id="UTq-Oo-aPi"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
