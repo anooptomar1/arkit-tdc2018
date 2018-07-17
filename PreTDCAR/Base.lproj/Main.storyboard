@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SWz-J3-fLc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -169,9 +169,6 @@
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1000" minValue="0.0" maxValue="4000" translatesAutoresizingMaskIntoConstraints="NO" id="mJF-xE-SkN">
                                         <rect key="frame" x="-2" y="20.5" width="359" height="31"/>
-                                        <connections>
-                                            <action selector="intensityChanged:" destination="SWz-J3-fLc" eventType="valueChanged" id="YFK-U8-3iv"/>
-                                        </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temperatura" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IaK-4I-e1g">
                                         <rect key="frame" x="0.0" y="50.5" width="355" height="20.5"/>
@@ -181,9 +178,6 @@
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="6500" minValue="0.0" maxValue="40000" translatesAutoresizingMaskIntoConstraints="NO" id="v9d-t0-Egj">
                                         <rect key="frame" x="-2" y="71" width="359" height="31"/>
-                                        <connections>
-                                            <action selector="temperatureChanged:" destination="SWz-J3-fLc" eventType="valueChanged" id="zbX-MJ-g7g"/>
-                                        </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8c-x0-d0Q">
                                         <rect key="frame" x="0.0" y="101" width="355" height="20.5"/>
@@ -199,9 +193,6 @@
                                             <segment title="Azul"/>
                                             <segment title="Neutro"/>
                                         </segments>
-                                        <connections>
-                                            <action selector="colorChanged:" destination="SWz-J3-fLc" eventType="valueChanged" id="LtZ-5e-daf"/>
-                                        </connections>
                                     </segmentedControl>
                                 </subviews>
                             </stackView>
@@ -215,9 +206,6 @@
                                 <state key="normal" title="Novo Obj.">
                                     <color key="titleColor" red="0.1450980392" green="0.1450980392" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
-                                <connections>
-                                    <action selector="onAddObjectTouched" destination="SWz-J3-fLc" eventType="touchUpInside" id="dA7-zW-uD4"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -243,7 +231,6 @@
                     </view>
                     <connections>
                         <outlet property="arSceneView" destination="pec-GF-gUv" id="lNU-ek-183"/>
-                        <outlet property="label" destination="7Nq-6Z-Lwy" id="3bL-Tx-xPk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aAp-xB-tfX" sceneMemberID="firstResponder"/>
