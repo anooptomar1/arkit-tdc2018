@@ -16,10 +16,22 @@ class TDCViewController: UIViewController {
     
    var planeDetection = true
     
+    //MARK: Light Properties
+    
+    var mainLight: SCNLight?
+    var enableMainLight = true
+    var autoenablesDefaultLighting = false
+    var isLightEstimationEnabled = false
+    var updateEnvironmentalLight = false
+    
     //MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
        
+        if (enableMainLight) {
+            mainLight = addLight(type: .omni, at: nil, parent: nil).light
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +56,9 @@ class TDCViewController: UIViewController {
             configuration.planeDetection = [.horizontal]
         }
         
+        configuration.isLightEstimationEnabled = isLightEstimationEnabled
+        arSceneView.autoenablesDefaultLighting = autoenablesDefaultLighting
+        
         arSceneView.delegate = self
         arSceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
@@ -52,7 +67,7 @@ class TDCViewController: UIViewController {
     
     func addCube(parent: SCNNode) -> SCNNode{
         let cubeGeometry: SCNBox = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0.0)
-        cubeGeometry.firstMaterial?.diffuse.contents = UIColor.orange
+        cubeGeometry.firstMaterial?.diffuse.contents = UIColor.white
         let cubeNode = SCNNode(geometry: cubeGeometry)
         cubeNode.position = SCNVector3(x: 0.0, y: 0.0, z: -0.6)
         parent.addChildNode(cubeNode)
@@ -96,6 +111,59 @@ class TDCViewController: UIViewController {
         plane.height = CGFloat(planeAnchor.extent.z)
     }
     
+    //MARK: Light
+    func addLight(type: SCNLight.LightType, at position: SCNVector3?, parent: SCNNode?) -> SCNNode {
+        let light = SCNLight()
+        light.type = type
+        
+        let node = SCNNode()
+        node.light = light
+        
+        if let lpos = position {
+            node.position = lpos
+        }
+        else {
+            node.position = SCNVector3(0, 1.0, 0)
+        }
+        
+        if let parent = parent {
+            parent.addChildNode(node)
+        }
+        else {
+            arSceneView.scene.rootNode.addChildNode(node)
+        }
+        return node
+    }
+    
+    //MARK: Main Light
+    
+    @IBAction func intensityChanged(_ sender: UISlider) {
+        mainLight?.intensity = CGFloat(sender.value)
+    }
+    
+    @IBAction func temperatureChanged(_ sender: UISlider) {
+        mainLight?.temperature = CGFloat(sender.value)
+    }
+    
+    @IBAction func colorChanged(_ sender: UISegmentedControl) {
+        switch(sender.selectedSegmentIndex) {
+        case 0:
+            mainLight?.color = UIColor.red
+            break
+        case 1:
+            mainLight?.color = UIColor.green
+            break
+        case 2:
+            mainLight?.color = UIColor.blue
+            break
+        case 3:
+            mainLight?.color = UIColor.white
+            break
+        default:
+            mainLight?.color = UIColor.white
+            break
+        }
+    }
     
 }
 

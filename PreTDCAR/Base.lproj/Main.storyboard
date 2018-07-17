@@ -39,40 +39,40 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="wbl-BI-7Nr">
-                                <rect key="frame" x="10" y="422.5" width="427" height="149.5"/>
+                                <rect key="frame" x="10" y="422.5" width="431" height="149.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Intensidade" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sct-c6-BC9">
-                                        <rect key="frame" x="0.0" y="0.0" width="427" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="431" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1000" minValue="0.0" maxValue="4000" translatesAutoresizingMaskIntoConstraints="NO" id="fIX-B1-0Br">
-                                        <rect key="frame" x="-2" y="20.5" width="431" height="31"/>
+                                        <rect key="frame" x="-2" y="20.5" width="435" height="31"/>
                                         <connections>
                                             <action selector="intensityChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="eCF-X6-O6Y"/>
                                         </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temperatura" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnC-9K-WtM">
-                                        <rect key="frame" x="0.0" y="50.5" width="427" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="50.5" width="431" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="6500" minValue="0.0" maxValue="40000" translatesAutoresizingMaskIntoConstraints="NO" id="lD5-yZ-wOn">
-                                        <rect key="frame" x="-2" y="71" width="431" height="31"/>
+                                        <rect key="frame" x="-2" y="71" width="435" height="31"/>
                                         <connections>
                                             <action selector="temperatureChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="fvc-Qx-Mad"/>
                                         </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBf-gU-PA1">
-                                        <rect key="frame" x="0.0" y="101" width="427" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="101" width="431" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bXU-Hh-SMZ">
-                                        <rect key="frame" x="0.0" y="121.5" width="427" height="29"/>
+                                        <rect key="frame" x="0.0" y="121.5" width="431" height="29"/>
                                         <segments>
                                             <segment title="Vermelho"/>
                                             <segment title="Verde"/>
@@ -172,6 +172,9 @@
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1000" minValue="0.0" maxValue="4000" translatesAutoresizingMaskIntoConstraints="NO" id="mJF-xE-SkN">
                                         <rect key="frame" x="-2" y="20.5" width="359" height="31"/>
+                                        <connections>
+                                            <action selector="intensityChanged:" destination="SWz-J3-fLc" eventType="valueChanged" id="lH4-bR-fhN"/>
+                                        </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temperatura" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IaK-4I-e1g">
                                         <rect key="frame" x="0.0" y="50.5" width="355" height="20.5"/>
@@ -181,6 +184,9 @@
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="6500" minValue="0.0" maxValue="40000" translatesAutoresizingMaskIntoConstraints="NO" id="v9d-t0-Egj">
                                         <rect key="frame" x="-2" y="71" width="359" height="31"/>
+                                        <connections>
+                                            <action selector="temperatureChanged:" destination="SWz-J3-fLc" eventType="valueChanged" id="aGG-zO-V3G"/>
+                                        </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X8c-x0-d0Q">
                                         <rect key="frame" x="0.0" y="101" width="355" height="20.5"/>
@@ -196,6 +202,9 @@
                                             <segment title="Azul"/>
                                             <segment title="Neutro"/>
                                         </segments>
+                                        <connections>
+                                            <action selector="colorChanged:" destination="SWz-J3-fLc" eventType="valueChanged" id="Sg5-R3-19g"/>
+                                        </connections>
                                     </segmentedControl>
                                 </subviews>
                             </stackView>
