@@ -14,7 +14,8 @@ class TDCViewController: UIViewController {
     
     @IBOutlet weak var arSceneView: ARSCNView!
     
-   var planeDetection = true
+    var planeDetection = true
+    var enableTouch = true
     
     //MARK: Light Properties
     
@@ -34,6 +35,9 @@ class TDCViewController: UIViewController {
             mainLight = mainLightNode.light
         }
         
+        if(enableTouch) {
+            configureTouch()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -179,6 +183,30 @@ class TDCViewController: UIViewController {
             guard let light = lightNode.light else { continue }
             light.intensity = ambientIntensity
             light.temperature = ambientColorTemperature
+        }
+    }
+    
+    //MARK: Gesture
+    var tap: UITapGestureRecognizer!
+    
+    func configureTouch() {
+        tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
+        arSceneView.addGestureRecognizer(tap)
+    }
+    
+    @objc func handleTap(recognizer: UITapGestureRecognizer){
+        
+        if recognizer.state == .ended {
+            let location: CGPoint = recognizer.location(in: arSceneView)
+            let hits = arSceneView.hitTest(location, options: nil)
+            if !hits.isEmpty{
+                let tappedNode = hits.first?.node
+                let red = Double(arc4random_uniform(256))/255.0
+                let green = Double(arc4random_uniform(256))/255.0
+                let blue = Double(arc4random_uniform(256))/255.0
+                tappedNode?.geometry?.firstMaterial?.diffuse.contents = UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: 1)
+                print(tappedNode ?? "")
+            }
         }
     }
     
