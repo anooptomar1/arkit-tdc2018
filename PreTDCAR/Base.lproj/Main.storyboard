@@ -246,6 +246,7 @@
                     </view>
                     <connections>
                         <outlet property="arSceneView" destination="pec-GF-gUv" id="lNU-ek-183"/>
+                        <outlet property="label" destination="7Nq-6Z-Lwy" id="JhL-ow-yhu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aAp-xB-tfX" sceneMemberID="firstResponder"/>

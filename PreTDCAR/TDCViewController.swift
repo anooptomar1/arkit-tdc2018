@@ -14,7 +14,7 @@ class TDCViewController: UIViewController {
     
     @IBOutlet weak var arSceneView: ARSCNView!
     
-    var planeDetection = true
+    var planeDetection = false
     var enableTouch = true
     
     //MARK: Light Properties
@@ -24,6 +24,10 @@ class TDCViewController: UIViewController {
     var autoenablesDefaultLighting = false
     var isLightEstimationEnabled = true
     var lightNodes: [SCNNode] = []
+    
+    //MARK: Image Detection Properties
+    var imageDetection = true
+    @IBOutlet weak var label: UILabel!
     
     //MARK: -
     override func viewDidLoad() {
@@ -60,6 +64,12 @@ class TDCViewController: UIViewController {
             configuration.planeDetection = [.horizontal, .vertical]
         } else {
             configuration.planeDetection = [.horizontal]
+        }
+        if #available(iOS 11.3, *), imageDetection {
+            guard let images = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
+                fatalError("Algo deu errado ao carregar do AR Resources")
+            }
+            configuration.detectionImages = images
         }
         
         configuration.isLightEstimationEnabled = isLightEstimationEnabled
@@ -210,6 +220,39 @@ class TDCViewController: UIViewController {
         }
     }
     
+    //MARK: Image detection
+    @available(iOS 11.3, *)
+    func addDetectedObjectViaImage(node: SCNNode, anchor: ARAnchor) {
+        guard let imageAnchor = anchor as? ARImageAnchor else { return }
+        let referenceImage = imageAnchor.referenceImage
+        
+        let plane = SCNPlane(width: referenceImage.physicalSize.width,
+                             height: referenceImage.physicalSize.height)
+        
+        let planeNode = SCNNode(geometry: plane)
+        planeNode.opacity = 0.25
+        planeNode.eulerAngles.x = -.pi / 2
+        
+        DispatchQueue.main.async {
+            self.label.text = referenceImage.name ?? "Not named"
+        }
+        
+        node.addChildNode(planeNode)
+    }
+    
+    @available(iOS 11.3, *)
+    func updateDetectedObjectViaImage(in node: SCNNode, anchor: ARAnchor) {
+        if imageDetection, let imageAnchor = anchor as? ARImageAnchor {
+            let referenceImage = imageAnchor.referenceImage
+            
+            DispatchQueue.main.async {
+                self.label.text = referenceImage.name ?? "Not named"
+            }
+            
+            return
+        }
+    }
+    
 }
 
 extension TDCViewController: ARSCNViewDelegate {
@@ -219,11 +262,17 @@ extension TDCViewController: ARSCNViewDelegate {
         if (planeDetection) {
             addDetectedPlane(to: node, from: anchor)
         }
+        if #available(iOS 11.3, *) {
+            addDetectedObjectViaImage(node: node, anchor: anchor)
+        }
     }
-    
+
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         if (planeDetection) {
             updateDetectedPlanes(in: node, anchor)
+        }
+        if #available(iOS 11.3, *) {
+            updateDetectedObjectViaImage(in: node, anchor: anchor)
         }
     }
     
